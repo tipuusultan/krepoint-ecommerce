@@ -1,0 +1,111 @@
+{% extends 'app/base.html' %}
+{% load static %}
+{% block title %}Buy Now{% endblock title %}
+{% block main-content %}
+<div class="container">
+
+        <form method='POST' action='/order-placed/'> 
+{% csrf_token %}
+
+ <div class="row mt-5">
+  <div class="col-sm-6">
+    <h4>Payment Methods</h4>
+    <hr>
+      <div class="card mb-2">
+        <div class="card-body">
+
+
+{% for paymentmethod in paymentmethods %}
+         <div class="form-check">
+  <input class="form-check-input" type="radio" name="paymentmethod"  value={{paymentmethod}} id="flexRadioDefault1">
+  <label class="form-check-label" for="flexRadioDefault1">
+    {{paymentmethod}}
+  </label>
+</div>
+{% endfor %}
+
+
+          <p class="fw-bold">Price: RS. {{cart_total_price}}</p>
+        </div>
+      </div>
+    <small>Term and Condition: Lorem ipsum dolor sit amet consectetur adipisicing elit. Mollitia, ullam saepe! Iure optio repellat dolor velit, minus rem. Facilis cumque neque numquam laboriosam, accusantium adipisci nisi nihil in et quis?</small>
+  </div>
+  <div class="col-sm-4 offset-sm-1">
+    <h4>Select Shipping Address</h4>
+    <hr>
+
+    {% comment %} check user have already add their Address or Not  {% endcomment %}
+{% if address_exist %}
+    {% for a in address %}
+      <div class="card">
+        <div class="card-body">
+        <h5>{{a.state}}</h5>
+        <p>{{a.address1}}</p>
+        </div>
+      </div>
+        <div class="form-check mt-2 mb-5">
+          <input name='address' class="form-check-input" type="radio" value="{{a.id}}">
+          <label class="form-check-label fw-bold" for="">
+            Address: 1 </label>
+        </div>
+      {% endfor %}
+
+
+{% else %}
+
+{% comment %} if address is not added, user have to add their Address {% endcomment %}
+
+<h2>Address</h2>
+<form>
+  <div class="form-row">
+    <div class="col-md-6 mb-3">
+      <label for="validationDefault01">Name</label>
+      <input type="text" class="form-control" id="validationDefault01" value="Mark" required>
+    </div>
+
+  </div>
+  <div class="form-row">
+    <div class="col-md-6 mb-3">
+      <label for="validationDefault03">City</label>
+      <input type="text" class="form-control" id="validationDefault03" required>
+    </div>
+    <div class="col-md-3 mb-3">
+      <label for="validationDefault04">State</label>
+      <select class="custom-select" id="validationDefault04" required>
+        <option selected disabled value="">Choose...</option>
+        <option>...</option>
+      </select>
+    </div>
+    <div class="col-md-3 mb-3">
+      <label for="validationDefault05">Zip</label>
+      <input type="text" class="form-control" id="validationDefault05" required>
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" value="" id="invalidCheck2" required>
+      <label class="form-check-label" for="invalidCheck2">
+        Agree to terms and conditions
+      </label>
+    </div>
+  </div>
+  <button class="btn btn-primary" type="submit">Submit form</button>
+</form>
+
+        {% endif %}
+        <div class="text-end">
+        {% for c in cart %}
+        <input type='number' hidden name='cartid' value='{{c.id}}' >
+        {% endfor %}
+          <button type="submit" class="btn btn-warning mt-3 px-5 fw-bold">Continue with {{cart_quantity}} Product</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+{% endblock main-content %}

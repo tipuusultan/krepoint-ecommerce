@@ -1,0 +1,79 @@
+{% extends 'app/base.html' %}
+{% load static %}
+{% block title %}Cart{% endblock title %}
+{% block main-content %}
+<div class="container my-5">
+ <div class="row">
+  <h1 class="text-center mb-5">Shopping Cart</h1>
+  <div class="col-sm-8">
+  <div class="card">
+   <div class="card-body">
+
+        <form action='/checkout/' method='POST'>
+        {% csrf_token %}
+
+    <div class="row">
+{% for item in items %}
+     <div class="col-sm-3 text-center align-self-center"><img src="{{item.thumnail_image.url}}" alt="" srcset="" class="img-fluid img-thumbnail shadow-sm" height="150" width="150"> </div>
+     <div class="col-sm-9">
+      <div>
+       <h5>{{item}}</h5>
+       <p class="mb-2 text-muted small">{{item.short_dsc}}</p>
+       <div class="my-3">
+        <label for="quantity">Quantity:</label>
+        <a class="minus-cart btn"><i class="fas fa-minus-square fa-lg"></i></a>
+          <span id="quantity">{{item.quantity}}</span>
+        <a class="plus-cart btn"><i class="fas fa-plus-square fa-lg"></i></a>
+       </div> 
+       <div class="d-flex justify-content-between">
+        <a href="#" class="btn btn-sm btn-secondary mr-3">Remove item </a>
+        <p class="mb-0"><span><strong>RS. {{item.price}}</strong></span></p>
+       </div>
+      </div>
+     </div>
+     
+     {% comment %} parse the product ID's to checkoutpage {% endcomment %}
+     <input hidden name='cartid' value='{{item.id}}'>
+{% endfor %}
+
+
+    </div>
+
+   </div>
+   </div>
+  </div>
+
+  <div class="col-sm-4">
+   <div class="card">
+    <div class="card-body">
+      <h3>The Total Amount of</h3>
+      <ul class="list-group">
+       <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">Amount<span>Rs. {{cart_value}}.00</span></li>
+       <li class="list-group-item d-flex justify-content-between align-items-center px-0">Shipping<span>Rs. {{delivery_charge}}</span></li>
+       <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 mb-3">
+        <div>
+           <strong>Total</strong> <small>(including VAT)</small>
+         </div>
+         <span><strong>Rs. {{total_cart_value}} </strong></span>
+       </li>
+      </ul>
+      <div class="d-grid"><button class="btn btn-primary">Place Order</button></div>
+    </div>
+   </div>
+  </div>
+  </form>
+ </div>
+</div>
+<div class="container">
+ <div class="row">
+  <div class="col-sm-8">
+   <div class="card">
+    <div class="card-body">
+      <h5 class="mb-4">We accept</h5>
+      <img src="{% static 'app/images/payment.png' %}" alt="" class="img-fluid">
+    </div>
+  </div>
+  </div>
+ </div>
+</div>
+{% endblock main-content %}

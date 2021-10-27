@@ -1,0 +1,27 @@
+{% extends 'app/base.html' %}
+{% load static %}
+{% block title %}Buy Now{% endblock title %}
+{% block main-content %}
+<div class="container my-5">
+ <div class="row">
+ <h3>Welcome Sonam</h3>
+  <div class="col-sm-2 border-end">
+   <ul class="list-unstyled">
+    <li class="d-grid"><a href="{% url 'orders' %}" class="btn btn-primary">Orders</a></li>
+   </ul>
+  </div>
+  <div class="col-sm-9 offset-sm-1">
+
+{% for order in orders %}
+
+<div class='orders'>
+<a href='/product/{{order.cart.product.id}}'><h2>product: {{order.cart.product}}</h2></a>
+<p><b>Quantity:</b> {{order.cart.quantity}} <br>Price: {{order.cart.}}<br>Address: <br>{{order.address.address1}}<br>State: {{order.address.state}}<br>Pincode: {{order.address.pincode}}</p>
+</div>
+    {% endfor %}
+
+   </div>
+  </div>
+ </div>
+</div>
+{% endblock main-content %}
